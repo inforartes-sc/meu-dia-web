@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dia — Painel Administrativo Web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="logo-text">
+                    <h2>Meu Dia</h2>
+                    <span class="badge-admin">Admin Web</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Visão Geral</span>
+                </a>
+                <a href="#notifications" class="nav-item" data-tab="notifications">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Notificações Push</span>
+                </a>
+                <a href="#users" class="nav-item" data-tab="users">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Usuários</span>
+                </a>
+                <a href="#monetization" class="nav-item" data-tab="monetization">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>Assinaturas & AdMob</span>
+                </a>
+                <a href="#settings" class="nav-item" data-tab="settings">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Configurações API</span>
+                </a>
+                <a href="politica_de_privacidade.html" class="nav-item" target="_blank">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Política de Privacidade</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-dot online"></span>
+                    <span>Supabase Conectado</span>
+                </div>
+                <div class="admin-profile">
+                    <div class="avatar">A</div>
+                    <div class="profile-info">
+                        <strong>Administrador</strong>
+                        <small>admin@meudia.app</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-bar">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Pesquisar usuários, registros ou notificações...">
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="btn-quick-notify">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>Enviar Notificação</span>
+                    </button>
+                    <div class="header-clock" id="live-clock">--:--:--</div>
+                </div>
+            </header>
+
+            <!-- TAB 1: VISÃO GERAL (DASHBOARD) -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="page-header">
+                    <div>
+                        <h1>Painel de Controle</h1>
+                        <p>Acompanhe métricas em tempo real e gerencie o aplicativo Meu Dia.</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="refreshDashboardMetrics()">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Atualizar</span>
+                    </button>
+                </div>
+
+                <!-- KPI Cards Grid -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon blue">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Total de Usuários</span>
+                            <h3 id="stat-total-users">1.284</h3>
+                            <span class="kpi-trend positive"><i class="fa-solid fa-arrow-up"></i> +12% este mês</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon gold">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Assinantes PRO</span>
+                            <h3 id="stat-pro-users">342</h3>
+                            <span class="kpi-sub">26.6% de conversão</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon green">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Notificações Enviadas</span>
+                            <h3 id="stat-sent-notifications">48.910</h3>
+                            <span class="kpi-trend positive"><i class="fa-solid fa-check"></i> 99.4% entregues</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-icon purple">
+                            <i class="fa-solid fa-rectangle-ad"></i>
+                        </div>
+                        <div class="kpi-data">
+                            <span class="kpi-label">Impressões AdMob</span>
+                            <h3 id="stat-ad-impressions">152.400</h3>
+                            <span class="kpi-sub">Receita estimada: R$ 1.840</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Banners -->
+                <div class="dashboard-grid">
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-bullhorn"></i> Envio Rápido de Notificação Push</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-quick-push">
+                                <div class="form-group">
+                                    <label>Título da Notificação</label>
+                                    <input type="text" id="quick-push-title" class="form-input" placeholder="Ex: Lembrete Importante! ⏰" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mensagem</label>
+                                    <textarea id="quick-push-message" class="form-input" rows="3" placeholder="Escreva a mensagem para todos os usuários..." required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Público Alvo</label>
+                                        <select id="quick-push-target" class="form-input">
+                                            <option value="ALL">Todos os Usuários (Gratuito + PRO)</option>
+                                            <option value="FREE">Apenas Usuários Gratuitos</option>
+                                            <option value="PRO">Apenas Usuários PRO 👑</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group align-end">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            <i class="fa-solid fa-paper-plane"></i> Disparar Agora
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-clock-rotate-left"></i> Notificações Recentes</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="recent-list" id="recent-notifications-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: NOTIFICAÇÕES PUSH -->
+            <section id="tab-notifications" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1>Central de Notificações Push</h1>
+                        <p>Crie, agende e envie mensagens em massa para o aplicativo Meu Dia.</p>
+                    </div>
+                </div>
+
+                <div class="push-workspace-grid">
+                    <!-- Notification Creator Form -->
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-pen-to-square"></i> Compor Notificação</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-full-push">
+                                <div class="form-group">
+                                    <label>Título</label>
+                                    <input type="text" id="push-title" class="form-input" placeholder="Ex: Organização da Semana 🎯" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mensagem Principal</label>
+                                    <textarea id="push-message" class="form-input" rows="4" placeholder="Escreva os detalhes da notificação..." required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Ação ao Clicar</label>
+                                        <select id="push-action" class="form-input">
+                                            <option value="OPEN_APP">Abrir Tela Inicial</option>
+                                            <option value="OPEN_TASKS">Abrir Minhas Tarefas</option>
+                                            <option value="OPEN_FINANCE">Abrir Finanças</option>
+                                            <option value="OPEN_SHOPPING">Abrir Listas de Compras</option>
+                                            <option value="OPEN_PREMIUM">Abrir Promoção PRO 👑</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Público Alvo</label>
+                                        <select id="push-target-full" class="form-input">
+                                            <option value="ALL">Todos os Dispositivos (Broadcast)</option>
+                                            <option value="FREE">Usuários da Versão Gratuita</option>
+                                            <option value="PRO">Assinantes VIP / PRO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fa-solid fa-paper-plane"></i> Enviar Notificação Push
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Live Mobile Preview -->
+                    <div class="card glass-card preview-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-mobile-screen-button"></i> Pré-visualização no Celular</h3>
+                        </div>
+                        <div class="card-body center-preview">
+                            <div class="phone-mockup">
+                                <div class="phone-speaker"></div>
+                                <div class="phone-screen">
+                                    <div class="phone-header">
+                                        <span>09:41</span>
+                                        <div class="phone-icons">
+                                            <i class="fa-solid fa-wifi"></i>
+                                            <i class="fa-solid fa-battery-full"></i>
+                                        </div>
+                                    </div>
+                                    <div class="notification-banner">
+                                        <div class="notif-header">
+                                            <div class="notif-app-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                                            <span class="notif-app-name">Meu Dia</span>
+                                            <span class="notif-time">Agora</span>
+                                        </div>
+                                        <div class="notif-content">
+                                            <strong id="preview-title">Título da Notificação</strong>
+                                            <p id="preview-message">A mensagem aparecerá aqui conforme você digita no formulário ao lado...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="card glass-card margin-top">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-list-check"></i> Histórico de Envios</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Título</th>
+                                    <th>Mensagem</th>
+                                    <th>Público</th>
+                                    <th>Entregues</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: USUÁRIOS -->
+            <section id="tab-users" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1>Gerenciamento de Usuários</h1>
+                        <p>Visualize usuários cadastrados, promova contas para PRO ou redefina permissões.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openAddUserModal()">
+                        <i class="fa-solid fa-user-plus"></i> Novo Usuário
+                    </button>
+                </div>
+
+                <div class="card glass-card">
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="user-search-input" placeholder="Buscar por nome ou e-mail..." onkeyup="filterUsers()">
+                        </div>
+                        <div class="filter-box">
+                            <select id="user-status-filter" onchange="filterUsers()" class="form-input">
+                                <option value="ALL">Todos os Planos</option>
+                                <option value="PRO">Somente PRO 👑</option>
+                                <option value="FREE">Somente Gratuitos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>E-mail</th>
+                                <th>Método de Login</th>
+                                <th>Plano</th>
+                                <th>Data de Cadastro</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 4: MONETIZAÇÃO E ADMOB -->
+            <section id="tab-monetization" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1>Monetização & AdMob</h1>
+                        <p>Gerencie blocos de anúncios AdMob, planos de assinatura e compras no app.</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-rectangle-ad"></i> Configuração de Bloco AdMob</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-admob">
+                                <div class="form-group">
+                                    <label>ID do App AdMob (Android)</label>
+                                    <input type="text" class="form-input" value="ca-app-pub-3940256099942544~3347511713">
+                                </div>
+                                <div class="form-group">
+                                    <label>Banner Ad Unit ID</label>
+                                    <input type="text" class="form-input" value="ca-app-pub-3940256099942544/6300978111">
+                                </div>
+                                <div class="form-group">
+                                    <label>Interstitial Ad Unit ID</label>
+                                    <input type="text" class="form-input" value="ca-app-pub-3940256099942544/1033173712">
+                                </div>
+                                <div class="form-group">
+                                    <label>Rewarded Video Ad Unit ID</label>
+                                    <input type="text" class="form-input" value="ca-app-pub-3940256099942544/5224354917">
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="alert('Configurações do AdMob salvas com sucesso!')">
+                                    <i class="fa-solid fa-floppy-disk"></i> Salvar Bloco AdMob
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card glass-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-gem"></i> Preços do Meu Dia PRO</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="price-setting-card">
+                                <div class="price-header">
+                                    <h4>Plano Mensal</h4>
+                                    <span class="price-badge">R$ 4,99 /mês</span>
+                                </div>
+                                <p>Cobrança mensal recorrente. Cancele a qualquer momento.</p>
+                            </div>
+                            <div class="price-setting-card">
+                                <div class="price-header">
+                                    <h4>Plano Anual (Economize 50%)</h4>
+                                    <span class="price-badge gold">R$ 29,90 /ano</span>
+                                </div>
+                                <p>Apenas R$ 2,49/mês. Economize 50% no plano anual!</p>
+                            </div>
+                            <div class="price-setting-card">
+                                <div class="price-header">
+                                    <h4>Acesso Vitalício ⭐ (Mais Popular)</h4>
+                                    <span class="price-badge gold">R$ 49,90 único</span>
+                                </div>
+                                <p>Pague uma única vez e tenha acesso PRO ilimitado para sempre!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: CONFIGURAÇÕES DA API -->
+            <section id="tab-settings" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1>Configurações da API & Supabase</h1>
+                        <p>Gerencie chaves de API, banco de dados Supabase e autenticação OAuth do Google.</p>
+                    </div>
+                </div>
+
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-database"></i> Conectividade Supabase & Google Auth</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="form-supabase-config">
+                            <div class="form-group">
+                                <label>Supabase URL</label>
+                                <input type="text" id="cfg-supabase-url" class="form-input" value="https://gunktlnjreqbxichcokr.supabase.co">
+                            </div>
+                            <div class="form-group">
+                                <label>Supabase Anon Key (JWT)</label>
+                                <input type="text" id="cfg-supabase-key" class="form-input" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bmt0bG5qcmVxYnhpY2hjb2tyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MzM5NzksImV4cCI6MjEwNjAwOTk3OX0.DZB6Eza3A5VHkfF-GtlfN_38TObTWyBFp8XqgmWJCXE">
+                            </div>
+                            <div class="form-group">
+                                <label>Google OAuth Client ID (Android / Web)</label>
+                                <input type="text" class="form-input" value="meudia-app-google-oauth-client-id.apps.googleusercontent.com">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="alert('Configurações salvas e aplicadas!')">
+                                <i class="fa-solid fa-floppy-disk"></i> Salvar Parâmetros
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>
