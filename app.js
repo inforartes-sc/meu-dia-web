@@ -98,14 +98,19 @@ function initNavigation() {
 
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetTab = item.getAttribute('data-tab');
+            if (!targetTab) return;
+
+            e.preventDefault();
 
             navItems.forEach(nav => nav.classList.remove('active'));
             tabContents.forEach(tab => tab.classList.remove('active'));
 
             item.classList.add('active');
-            document.getElementById(`tab-${targetTab}`).classList.add('active');
+            const targetEl = document.getElementById(`tab-${targetTab}`);
+            if (targetEl) {
+                targetEl.classList.add('active');
+            }
         });
     });
 
